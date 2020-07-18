@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Les Sagas MP3</string>
+    <string name="core_url">https://les-sagas-mp3-api.herokuapp.com/api/sagas</string>
+    <string name="no_sagas">Currently there is no Saga</string>
+</resources>
