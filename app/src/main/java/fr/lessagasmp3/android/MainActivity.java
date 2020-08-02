@@ -18,9 +18,6 @@ import fr.lessagasmp3.android.task.GetSaga;
 
 public class MainActivity extends ListActivity {
 
-    private static final int LOADER_ID = 42;
-    private SimpleCursorAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
