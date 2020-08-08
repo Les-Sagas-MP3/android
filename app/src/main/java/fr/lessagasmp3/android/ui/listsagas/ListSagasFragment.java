@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.orhanobut.logger.Logger;
 
@@ -27,12 +26,8 @@ import fr.lessagasmp3.android.model.Saga;
 
 public class ListSagasFragment extends Fragment {
 
-    private ListSagasViewModel listSagasViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        listSagasViewModel =
-                ViewModelProviders.of(this).get(ListSagasViewModel.class);
         View root = inflater.inflate(R.layout.fragment_list_sagas, container, false);
 
         Activity activity = getActivity();

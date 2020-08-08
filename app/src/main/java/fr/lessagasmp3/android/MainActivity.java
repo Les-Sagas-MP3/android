@@ -13,7 +13,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import fr.lessagasmp3.android.task.GetSaga;
+import fr.lessagasmp3.android.task.GetRssMessages;
+import fr.lessagasmp3.android.task.GetSagas;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_news, R.id.navigation_list_sagas)
                 .build();
@@ -43,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_sync:
                 Toast.makeText(this, "Download started", Toast.LENGTH_SHORT).show();
-                GetSaga getSaga = new GetSaga(getResources().getString(R.string.core_url), getContentResolver());
-                getSaga.execute();
+                GetSagas getSagas = new GetSagas(getResources().getString(R.string.core_url) + "/api/sagas", getContentResolver());
+                getSagas.execute();
+                GetRssMessages getRssMessages = new GetRssMessages(getResources().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", getContentResolver());
+                getRssMessages.execute();
                 return true;
         }
         return super.onOptionsItemSelected(item);

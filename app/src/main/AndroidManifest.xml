@@ -21,8 +21,11 @@
         </activity>
 
         <provider
+            android:name=".contentprovider.RssMessageProvider"
+            android:authorities="fr.lessagasmp3.android.contentprovider.rssmessages" />
+        <provider
             android:name=".contentprovider.SagaProvider"
-            android:authorities="fr.lessagasmp3.android.contentprovider" />
+            android:authorities="fr.lessagasmp3.android.contentprovider.sagas" />
     </application>
 
 </manifest>

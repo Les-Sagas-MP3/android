@@ -13,8 +13,6 @@ import lombok.ToString;
 @ToString
 public class Saga extends Audit<String> {
 
-    private Long id;
-
     private String title = "";
 
     private String url = "";

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PUBLIC)
 @ToString
-class Audit<U> {
+class Audit<U> extends Identity {
 
     private Date createdAt;
 

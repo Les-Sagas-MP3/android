@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -19,16 +20,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class GetSaga extends AsyncTask<String, Void, String> {
+public class GetSagas extends AsyncTask<String, Void, String> {
 
     private ContentResolver contentResolver;
     private String url = "";
     private Exception exception = null;
     private OkHttpClient client = new OkHttpClient();
 
-    public GetSaga(String url, ContentResolver contentResolver) {
+    public GetSagas(String url, ContentResolver contentResolver) {
         this.url = url;
         this.contentResolver = contentResolver;
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     protected String doInBackground(String... urls) {

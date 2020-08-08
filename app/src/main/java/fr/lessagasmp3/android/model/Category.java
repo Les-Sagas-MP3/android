@@ -13,8 +13,6 @@ import lombok.ToString;
 @ToString(exclude = {"sagas"})
 public class Category extends Audit<String> {
 
-    private Long id;
-
     private String name = "";
 
     private Integer nbSagas = 0;

@@ -19,21 +19,24 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import fr.lessagasmp3.android.database.DatabaseHelper;
-import fr.lessagasmp3.android.database.SagaTable;
+import fr.lessagasmp3.android.database.RssMessageTable;
 
-import static fr.lessagasmp3.android.common.ProviderCommon.SAGAS;
-import static fr.lessagasmp3.android.common.ProviderCommon.SAGA_ID;
+import static fr.lessagasmp3.android.common.ProviderCommon.RSS_MESSAGE;
+import static fr.lessagasmp3.android.common.ProviderCommon.RSS_MESSAGE_ID;
 
-public class SagaProvider extends ContentProvider {
+public class RssMessageProvider extends ContentProvider {
 
     private DatabaseHelper database;
 
-    private static final String AUTHORITY = "fr.lessagasmp3.android.contentprovider.sagas";
-    private static final String BASE_PATH = SagaTable.TABLE_NAME;
-    private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    static {
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, SAGAS);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", SAGA_ID);
+    private static final String AUTHORITY = "fr.lessagasmp3.android.contentprovider.rssmessages";
+    private static final String BASE_PATH = RssMessageTable.TABLE_NAME;
+    private static final UriMatcher sURIMatcher = buildUriMatcher();
+
+    private static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        matcher.addURI(AUTHORITY, BASE_PATH, RSS_MESSAGE);
+        matcher.addURI(AUTHORITY, BASE_PATH + "/#", RSS_MESSAGE_ID);
+        return matcher;
     }
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
@@ -50,13 +53,13 @@ public class SagaProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         checkColumns(projection);
-        queryBuilder.setTables(SagaTable.TABLE_NAME);
+        queryBuilder.setTables(RssMessageTable.TABLE_NAME);
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
-            case SAGAS:
+            case RSS_MESSAGE:
                 break;
-            case SAGA_ID:
-                queryBuilder.appendWhere(SagaTable.COLUMN_ID + "=" + uri.getLastPathSegment());
+            case RSS_MESSAGE_ID:
+                queryBuilder.appendWhere(RssMessageTable.COLUMN_ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 Logger.d("Unknown URI: " + uri);
@@ -81,8 +84,8 @@ public class SagaProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         long id = 0;
         switch (uriType) {
-            case SAGAS:
-                id = sqlDB.insert(SagaTable.TABLE_NAME, null, values);
+            case RSS_MESSAGE:
+                id = sqlDB.insert(RssMessageTable.TABLE_NAME, null, values);
                 break;
             default:
                 Logger.d("Unknown URI: " + uri);
@@ -97,18 +100,18 @@ public class SagaProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int rowsDeleted = 0;
         switch (uriType) {
-            case SAGAS:
-                rowsDeleted = sqlDB.delete(SagaTable.TABLE_NAME, selection, selectionArgs);
+            case RSS_MESSAGE:
+                rowsDeleted = sqlDB.delete(RssMessageTable.TABLE_NAME, selection, selectionArgs);
                 break;
-            case SAGA_ID:
+            case RSS_MESSAGE_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = sqlDB.delete(SagaTable.TABLE_NAME,
-                            SagaTable.COLUMN_ID + "=" + id,
+                    rowsDeleted = sqlDB.delete(RssMessageTable.TABLE_NAME,
+                            RssMessageTable.COLUMN_ID + "=" + id,
                             null);
                 } else {
-                    rowsDeleted = sqlDB.delete(SagaTable.TABLE_NAME,
-                            SagaTable.COLUMN_ID + "=" + id + " and " + selection,
+                    rowsDeleted = sqlDB.delete(RssMessageTable.TABLE_NAME,
+                            RssMessageTable.COLUMN_ID + "=" + id + " and " + selection,
                             selectionArgs);
                 }
                 break;
@@ -125,23 +128,23 @@ public class SagaProvider extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         int rowsUpdated = 0;
         switch (uriType) {
-            case SAGAS:
-                rowsUpdated = sqlDB.update(SagaTable.TABLE_NAME,
+            case RSS_MESSAGE:
+                rowsUpdated = sqlDB.update(RssMessageTable.TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
                 break;
-            case SAGA_ID:
+            case RSS_MESSAGE_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = sqlDB.update(SagaTable.TABLE_NAME,
+                    rowsUpdated = sqlDB.update(RssMessageTable.TABLE_NAME,
                             values,
-                            SagaTable.COLUMN_ID + "=" + id,
+                            RssMessageTable.COLUMN_ID + "=" + id,
                             null);
                 } else {
-                    rowsUpdated = sqlDB.update(SagaTable.TABLE_NAME,
+                    rowsUpdated = sqlDB.update(RssMessageTable.TABLE_NAME,
                             values,
-                            SagaTable.COLUMN_ID + "=" + id
+                            RssMessageTable.COLUMN_ID + "=" + id
                                     + " and "
                                     + selection,
                             selectionArgs);
@@ -157,7 +160,7 @@ public class SagaProvider extends ContentProvider {
     private void checkColumns(String[] projection) {
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
-            HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(SagaTable.ALL_COLUMNS));
+            HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(RssMessageTable.ALL_COLUMNS));
             if (!availableColumns.containsAll(requestedColumns)) {
                 throw new IllegalArgumentException("Unknown columns in projection");
             }
