@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">Les Sagas MP3</string>
-    <string name="core_url">https://les-sagas-mp3-api.herokuapp.com</string>
-    <string name="no_sagas">Currently there is no Saga</string>
-    <string name="no_news">Currently there is no News</string>
-    <string name="news">News</string>
-    <string name="list_sagas">Sagas List</string>
+    <string name="app_name" translatable="false">Les Sagas MP3</string>
+    <string name="core_url" translatable="false">https://les-sagas-mp3-api.herokuapp.com</string>
+    <string name="no_sagas" translatable="true">Currently there is no Saga</string>
+    <string name="no_news" translatable="true">Currently there is no News</string>
+    <string name="news" translatable="true">News</string>
+    <string name="list_sagas" translatable="true">Sagas List</string>
+
+    <string name="new_notification_channel_id" translatable="false">news</string>
+    <string name="new_notification_channel_name" translatable="true">News</string>
+    <string name="news_notification_title" translatable="true">Les Sagas MP3 - new content</string>
 </resources>

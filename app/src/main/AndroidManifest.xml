@@ -16,6 +16,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="fr.lessagasmp3.android.MainActivity"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,6 +27,15 @@
         <provider
             android:name=".contentprovider.SagaProvider"
             android:authorities="fr.lessagasmp3.android.contentprovider.sagas" />
+
+        <service
+            android:name=".firebase.FirebaseService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
