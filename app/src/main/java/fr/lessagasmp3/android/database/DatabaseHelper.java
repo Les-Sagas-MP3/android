@@ -17,12 +17,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         RssMessageTable.onCreate(database);
-        SagaTable.onCreate(database);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
         RssMessageTable.onUpgrade(database, oldVersion, newVersion);
-        SagaTable.onUpgrade(database, oldVersion, newVersion);
     }
 }

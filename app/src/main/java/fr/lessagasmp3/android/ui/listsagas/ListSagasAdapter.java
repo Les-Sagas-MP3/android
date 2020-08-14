@@ -4,63 +4,59 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import fr.lessagasmp3.android.R;
-import fr.lessagasmp3.android.model.Saga;
+import fr.lessagasmp3.android.entity.Saga;
 
-public class ListSagasAdapter extends BaseAdapter {
+public class ListSagasAdapter extends RecyclerView.Adapter<ListSagasAdapter.SagaViewHolder> {
 
-    private List<Saga> listData;
-    private LayoutInflater layoutInflater;
-    private Context context;
+    private final LayoutInflater mInflater;
+    private List<Saga> mSagas; // Cached copy
 
-    public ListSagasAdapter(Context aContext,  List<Saga> listData) {
-        this.context = aContext;
-        this.listData = listData;
-        layoutInflater = LayoutInflater.from(aContext);
+    ListSagasAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+
+    @Override
+    public SagaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
+        return new SagaViewHolder(itemView);
     }
 
     @Override
-    public int getCount() {
-        return listData.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return listData.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_layout, null);
-            holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.textView_title);
-            holder.subtitle = (TextView) convertView.findViewById(R.id.textView_subtitle);
-            convertView.setTag(holder);
+    public void onBindViewHolder(SagaViewHolder holder, int position) {
+        if (mSagas != null) {
+            Saga current = mSagas.get(position);
+            holder.wordItemView.setText(current.getTitle());
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            // Covers the case of data not being ready yet.
+            holder.wordItemView.setText("No Saga");
         }
-
-        Saga saga = this.listData.get(position);
-        holder.title.setText(saga.getTitle());
-        holder.subtitle.setText(saga.getUrl());
-
-        return convertView;
     }
 
-    static class ViewHolder {
-        TextView title;
-        TextView subtitle;
+    void setSagas(List<Saga> words){
+        mSagas = words;
+        notifyDataSetChanged();
     }
 
+    // getItemCount() is called many times, and when it is first called,
+    // mSagas has not been updated (means initially, it's null, and we can't return null).
+    @Override
+    public int getItemCount() {
+        if (mSagas != null)
+            return mSagas.size();
+        else return 0;
+    }
+
+    class SagaViewHolder extends RecyclerView.ViewHolder {
+        private final TextView wordItemView;
+
+        private SagaViewHolder(View itemView) {
+            super(itemView);
+            wordItemView = itemView.findViewById(R.id.textView);
+        }
+    }
 }

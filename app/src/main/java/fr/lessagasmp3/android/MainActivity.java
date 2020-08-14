@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_sync:
                 Toast.makeText(this, "Download started", Toast.LENGTH_SHORT).show();
-                GetSagas getSagas = new GetSagas(getResources().getString(R.string.core_url) + "/api/sagas", getContentResolver());
+                GetSagas getSagas = new GetSagas(getResources().getString(R.string.core_url) + "/api/sagas", this.getApplication());
                 getSagas.execute();
                 GetRssMessages getRssMessages = new GetRssMessages(getResources().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", getContentResolver());
                 getRssMessages.execute();

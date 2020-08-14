@@ -24,10 +24,6 @@
         <provider
             android:name=".contentprovider.RssMessageProvider"
             android:authorities="fr.lessagasmp3.android.contentprovider.rssmessages" />
-        <provider
-            android:name=".contentprovider.SagaProvider"
-            android:authorities="fr.lessagasmp3.android.contentprovider.sagas" />
-
         <service
             android:name=".firebase.FirebaseService">
             <intent-filter>

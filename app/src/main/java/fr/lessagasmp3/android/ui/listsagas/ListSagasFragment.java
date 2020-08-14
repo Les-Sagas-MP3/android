@@ -1,79 +1,47 @@
 package fr.lessagasmp3.android.ui.listsagas;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.orhanobut.logger.Logger;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import fr.lessagasmp3.android.R;
-import fr.lessagasmp3.android.common.DateCommon;
-import fr.lessagasmp3.android.contentprovider.SagaProvider;
-import fr.lessagasmp3.android.database.SagaTable;
-import fr.lessagasmp3.android.model.Saga;
+import fr.lessagasmp3.android.task.GetSagas;
 
 public class ListSagasFragment extends Fragment {
+
+    private static boolean firstCreationOfFragment = true;
+
+    private ListSagasViewModel mSagaViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_sagas, container, false);
 
-        Activity activity = getActivity();
-        if(activity != null) {
-            ListView lv = (ListView)root.findViewById(R.id.list);
-            List<Saga> sagas = getSagas();
-            TextView txtView = (TextView)root.findViewById(R.id.empty);
-            if(sagas.size() > 0) {
-                txtView.setVisibility(View.INVISIBLE);
-            } else {
-                txtView.setVisibility(View.VISIBLE);
-            }
-            lv.setAdapter(new ListSagasAdapter(activity, getSagas()));
-        }
-        return root;
-    }
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
+        final ListSagasAdapter adapter = new ListSagasAdapter(this.getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-    public List<Saga> getSagas(){
-        Cursor cursor = getActivity().getContentResolver().query(SagaProvider.CONTENT_URI, null, null, null, null);
-        cursor.moveToFirst();
-        List<Saga> sagas = new ArrayList<>();
-        while(!cursor.isAfterLast()) {
-            Saga saga = new Saga();
-            saga.setId(cursor.getLong(cursor.getColumnIndex(SagaTable.COLUMN_ID)));
-            saga.setCreatedBy(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_CREATED_BY)));
-            saga.setUpdatedBy(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_UPDATED_BY)));
-            saga.setTitle(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_TITLE)));
-            saga.setUrl(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_URL)));
-            saga.setUrlWiki(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_URL_WIKI)));
-            saga.setLevelArt(cursor.getInt(cursor.getColumnIndex(SagaTable.COLUMN_LEVEL_ART)));
-            saga.setLevelTech(cursor.getInt(cursor.getColumnIndex(SagaTable.COLUMN_LEVEL_TECH)));
-            saga.setNbReviews(cursor.getInt(cursor.getColumnIndex(SagaTable.COLUMN_NB_REVIEWS)));
-            saga.setUrlReviews(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_URL_REVIEWS)));
-            saga.setNbBravos(cursor.getInt(cursor.getColumnIndex(SagaTable.COLUMN_NB_BRAVOS)));
-            try {
-                saga.setCreatedAt(DateCommon.DATE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_CREATED_AT))));
-                saga.setUpdatedAt(DateCommon.DATE_FORMAT.parse(cursor.getString(cursor.getColumnIndex(SagaTable.COLUMN_UPDATED_AT))));
-            } catch (ParseException e) {
-                if(e.getMessage() != null) {
-                    Logger.e(e.getMessage(), e);
-                }
+        mSagaViewModel = new ViewModelProvider(this).get(ListSagasViewModel.class);
+        mSagaViewModel.getAllSagas().observe(getViewLifecycleOwner(), adapter::setSagas);
+
+        if(firstCreationOfFragment) {
+            Activity activity = this.getActivity();
+            if(activity != null) {
+                GetSagas getSagas = new GetSagas(this.getActivity().getString(R.string.core_url) + "/api/sagas", this.getActivity().getApplication());
+                getSagas.execute();
             }
-            sagas.add(saga);
-            cursor.moveToNext();
+            firstCreationOfFragment = false;
         }
-        cursor.close();
-        return sagas;
+
+        return root;
     }
 }
