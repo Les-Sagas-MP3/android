@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import fr.lessagasmp3.android.task.GetRssMessages;
-import fr.lessagasmp3.android.task.GetSagas;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_sync:
                 Toast.makeText(this, "Download started", Toast.LENGTH_SHORT).show();
-                GetSagas getSagas = new GetSagas(getResources().getString(R.string.core_url) + "/api/sagas", this.getApplication());
-                getSagas.execute();
-                GetRssMessages getRssMessages = new GetRssMessages(getResources().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", getContentResolver());
+                GetRssMessages getRssMessages = new GetRssMessages(getResources().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", this.getApplication());
                 getRssMessages.execute();
                 return true;
         }

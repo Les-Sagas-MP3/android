@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.futuremind.recyclerviewfastscroll.FastScroller;
 
 import fr.lessagasmp3.android.R;
 import fr.lessagasmp3.android.task.GetSagas;
@@ -26,17 +29,28 @@ public class ListSagasFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_list_sagas, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
+        SwipeRefreshLayout mSwipeRefreshLayout = root.findViewById(R.id.swipeToRefresh);
+        FastScroller fastScroller = root.findViewById(R.id.fastscroll);
+
         final ListSagasAdapter adapter = new ListSagasAdapter(this.getContext());
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
+        fastScroller.setRecyclerView(recyclerView);
 
         mSagaViewModel = new ViewModelProvider(this).get(ListSagasViewModel.class);
         mSagaViewModel.getAllSagas().observe(getViewLifecycleOwner(), adapter::setSagas);
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            GetSagas getSagas = new GetSagas(this.getActivity(), mSwipeRefreshLayout);
+            getSagas.execute();
+        });
+
         if(firstCreationOfFragment) {
             Activity activity = this.getActivity();
             if(activity != null) {
-                GetSagas getSagas = new GetSagas(this.getActivity().getString(R.string.core_url) + "/api/sagas", this.getActivity().getApplication());
+                mSwipeRefreshLayout.setRefreshing(true);
+                GetSagas getSagas = new GetSagas(this.getActivity(), mSwipeRefreshLayout);
                 getSagas.execute();
             }
             firstCreationOfFragment = false;

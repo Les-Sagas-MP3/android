@@ -1,14 +1,16 @@
 package fr.lessagasmp3.android.task;
 
-import android.app.Application;
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
+import fr.lessagasmp3.android.R;
 import fr.lessagasmp3.android.entity.Saga;
 import fr.lessagasmp3.android.persistence.repository.SagaRepository;
 import okhttp3.OkHttpClient;
@@ -18,15 +20,20 @@ import okhttp3.ResponseBody;
 
 public class GetSagas extends AsyncTask<String, Void, String> {
 
+    public static final String TAG = "GetSagas";
+
+    private Activity activity;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private SagaRepository mRepository;
     private String url = "";
-    private Exception exception = null;
     private OkHttpClient client = new OkHttpClient();
+    private int nbSagasDownloaded = 0;
 
-    public GetSagas(String url, Application application) {
-        this.url = url;
-        mRepository = new SagaRepository(application);
-        Logger.addLogAdapter(new AndroidLogAdapter());
+    public GetSagas(Activity activity, SwipeRefreshLayout mSwipeRefreshLayout) {
+        this.activity = activity;
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
+        this.url = activity.getString(R.string.core_url) + "/api/sagas";
+        mRepository = new SagaRepository(activity.getApplication());
     }
 
     protected String doInBackground(String... urls) {
@@ -43,20 +50,25 @@ public class GetSagas extends AsyncTask<String, Void, String> {
                 stringJson = body.string();
                 Gson gson = new Gson();
                 Saga[] sagas = gson.fromJson(stringJson, Saga[].class);
-                Logger.i("Sync successfull : %d sagas downloaded", sagas.length);
                 mRepository.deleteAll();
                 for (Saga saga : sagas) {
                     mRepository.insert(saga);
                 }
+                nbSagasDownloaded = sagas.length;
+                Log.i(TAG, "Sync successfull : " + nbSagasDownloaded + " sagas downloaded");
             }
         } catch(IOException e) {
-            this.exception = e;
             if(e.getMessage() != null)
-                Logger.e(e.getMessage());
+                Log.e(TAG, e.getMessage());
             return null;
         }
         return stringJson;
     }
 
+    protected void onPostExecute(String stringJson) {
+        if(mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
 }
 

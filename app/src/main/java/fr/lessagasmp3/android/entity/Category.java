@@ -1,4 +1,9 @@
-package fr.lessagasmp3.android.model;
+package fr.lessagasmp3.android.entity;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -8,15 +13,21 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity(tableName = "category_table")
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PUBLIC)
 @ToString(exclude = {"sagas"})
-public class Category extends Audit<String> {
+public class Category extends Audit {
 
+    @NonNull
+    @ColumnInfo(name = "name")
     private String name = "";
 
+    @NonNull
+    @ColumnInfo(name = "nb_sagas")
     private Integer nbSagas = 0;
 
+    @Ignore
     private Set<Saga> sagas = new LinkedHashSet<>();
 
 }

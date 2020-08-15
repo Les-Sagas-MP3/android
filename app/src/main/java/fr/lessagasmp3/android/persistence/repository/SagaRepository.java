@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import fr.lessagasmp3.android.entity.Saga;
+import fr.lessagasmp3.android.persistence.MainRoomDatabase;
 import fr.lessagasmp3.android.persistence.dao.SagaDao;
-import fr.lessagasmp3.android.persistence.room.SagaRoomDatabase;
 
 public class SagaRepository {
 
@@ -17,8 +17,8 @@ public class SagaRepository {
     private LiveData<List<Saga>> mAllSagas;
 
     public SagaRepository(Application application) {
-        SagaRoomDatabase db = SagaRoomDatabase.getDatabase(application);
-        mSagaDao = db.dao();
+        MainRoomDatabase db = MainRoomDatabase.getDatabase(application);
+        mSagaDao = db.sagaDao();
         mAllSagas = mSagaDao.getAllSagas();
     }
 

@@ -8,17 +8,23 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.lessagasmp3.android.R;
 import fr.lessagasmp3.android.entity.Saga;
 
-public class ListSagasAdapter extends RecyclerView.Adapter<ListSagasAdapter.SagaViewHolder> {
+public class ListSagasAdapter extends RecyclerView.Adapter<ListSagasAdapter.SagaViewHolder> implements SectionTitleProvider {
 
     private final LayoutInflater mInflater;
     private List<Saga> mSagas; // Cached copy
+    private ArrayList<Integer> mSectionPositions;
 
-    ListSagasAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    ListSagasAdapter(Context context) {
+        mInflater = LayoutInflater.from(context);
+    }
 
     @Override
     public SagaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,6 +57,12 @@ public class ListSagasAdapter extends RecyclerView.Adapter<ListSagasAdapter.Saga
         else return 0;
     }
 
+    @Override
+    public String getSectionTitle(int position) {
+        //this String will be shown in a bubble for specified position
+        return mSagas.get(position).getTitle().substring(0, 1);
+    }
+
     class SagaViewHolder extends RecyclerView.ViewHolder {
         private final TextView wordItemView;
 
@@ -59,4 +71,5 @@ public class ListSagasAdapter extends RecyclerView.Adapter<ListSagasAdapter.Saga
             wordItemView = itemView.findViewById(R.id.textView);
         }
     }
+
 }

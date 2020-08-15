@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name=".contentprovider.RssMessageProvider"
-            android:authorities="fr.lessagasmp3.android.contentprovider.rssmessages" />
         <service
             android:name=".firebase.FirebaseService">
             <intent-filter>

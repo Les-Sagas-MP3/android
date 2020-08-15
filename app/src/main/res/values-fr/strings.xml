@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_news">Aucune actualité disponible actuellement</string>
+    <string name="news">Actualités</string>
+    <string name="list_sagas">Liste des sagas</string>
+    <string name="new_notification_channel_name">Actualités</string>
+    <string name="news_notification_title">Les Sagas MP3 - nouveau contenu disponible !</string>
+    <string name="no_sagas">Aucune saga disponible actuellement</string>
+</resources>

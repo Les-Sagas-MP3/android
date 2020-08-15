@@ -10,8 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import fr.lessagasmp3.android.common.StringCommon;
-import fr.lessagasmp3.android.model.Author;
-import fr.lessagasmp3.android.model.Category;
 import fr.lessagasmp3.android.persistence.DateConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
