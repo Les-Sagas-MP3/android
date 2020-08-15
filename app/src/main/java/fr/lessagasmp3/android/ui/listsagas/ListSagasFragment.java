@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.futuremind.recyclerviewfastscroll.FastScroller;
 
 import fr.lessagasmp3.android.R;
-import fr.lessagasmp3.android.task.GetSagas;
+import fr.lessagasmp3.android.task.GetSagasTask;
 
 public class ListSagasFragment extends Fragment {
 
@@ -42,7 +42,7 @@ public class ListSagasFragment extends Fragment {
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            GetSagas getSagas = new GetSagas(this.getActivity(), mSwipeRefreshLayout);
+            GetSagasTask getSagas = new GetSagasTask(this.getActivity(), mSwipeRefreshLayout);
             getSagas.execute();
         });
 
@@ -50,7 +50,7 @@ public class ListSagasFragment extends Fragment {
             Activity activity = this.getActivity();
             if(activity != null) {
                 mSwipeRefreshLayout.setRefreshing(true);
-                GetSagas getSagas = new GetSagas(this.getActivity(), mSwipeRefreshLayout);
+                GetSagasTask getSagas = new GetSagasTask(this.getActivity(), mSwipeRefreshLayout);
                 getSagas.execute();
             }
             firstCreationOfFragment = false;

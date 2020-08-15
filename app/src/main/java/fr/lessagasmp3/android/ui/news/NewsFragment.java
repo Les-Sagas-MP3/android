@@ -11,9 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.futuremind.recyclerviewfastscroll.FastScroller;
 
 import fr.lessagasmp3.android.R;
-import fr.lessagasmp3.android.task.GetRssMessages;
+import fr.lessagasmp3.android.task.GetRssMessagesTask;
 
 public class NewsFragment extends Fragment {
 
@@ -25,17 +28,27 @@ public class NewsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_news, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
+        SwipeRefreshLayout mSwipeRefreshLayout = root.findViewById(R.id.swipeToRefresh);
+        FastScroller fastScroller = root.findViewById(R.id.fastscroll);
+
         final NewsAdapter adapter = new NewsAdapter(this.getContext());
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
+        fastScroller.setRecyclerView(recyclerView);
 
         mRssMessageViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         mRssMessageViewModel.getAllRssMessages().observe(getViewLifecycleOwner(), adapter::setRssMessages);
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            GetRssMessagesTask getRssMessages = new GetRssMessagesTask(this.getActivity(), mSwipeRefreshLayout);
+            getRssMessages.execute();
+        });
+
         if(firstCreationOfFragment) {
             Activity activity = this.getActivity();
             if(activity != null) {
-                GetRssMessages getRssMessages = new GetRssMessages(this.getActivity().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", this.getActivity().getApplication());
+                GetRssMessagesTask getRssMessages = new GetRssMessagesTask(this.getActivity(), mSwipeRefreshLayout);
                 getRssMessages.execute();
             }
             firstCreationOfFragment = false;

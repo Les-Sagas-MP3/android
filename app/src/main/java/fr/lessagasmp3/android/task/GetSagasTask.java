@@ -18,19 +18,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class GetSagas extends AsyncTask<String, Void, String> {
+public class GetSagasTask extends AsyncTask<String, Void, String> {
 
     public static final String TAG = "GetSagas";
 
-    private Activity activity;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SagaRepository mRepository;
     private String url = "";
     private OkHttpClient client = new OkHttpClient();
-    private int nbSagasDownloaded = 0;
 
-    public GetSagas(Activity activity, SwipeRefreshLayout mSwipeRefreshLayout) {
-        this.activity = activity;
+    public GetSagasTask(Activity activity, SwipeRefreshLayout mSwipeRefreshLayout) {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;
         this.url = activity.getString(R.string.core_url) + "/api/sagas";
         mRepository = new SagaRepository(activity.getApplication());
@@ -54,8 +51,7 @@ public class GetSagas extends AsyncTask<String, Void, String> {
                 for (Saga saga : sagas) {
                     mRepository.insert(saga);
                 }
-                nbSagasDownloaded = sagas.length;
-                Log.i(TAG, "Sync successfull : " + nbSagasDownloaded + " sagas downloaded");
+                Log.i(TAG, "Sync successfull : " + sagas.length + " sagas downloaded");
             }
         } catch(IOException e) {
             if(e.getMessage() != null)

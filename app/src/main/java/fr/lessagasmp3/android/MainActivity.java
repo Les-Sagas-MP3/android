@@ -2,12 +2,12 @@ package fr.lessagasmp3.android;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import fr.lessagasmp3.android.task.GetRssMessages;
+import fr.lessagasmp3.android.service.PingService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent i = new Intent(this, PingService.class);
+        i.putExtra("core_url", getString(R.string.core_url));
+        startService(i);
         mAuth = FirebaseAuth.getInstance();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -71,11 +74,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_sync:
-                Toast.makeText(this, "Download started", Toast.LENGTH_SHORT).show();
-                GetRssMessages getRssMessages = new GetRssMessages(getResources().getString(R.string.core_url) + "/api/rss?feedTitle=Nouveautés", this.getApplication());
-                getRssMessages.execute();
-                return true;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
-                            Log.d(TAG, user.getUid());
                             FirebaseMessaging.getInstance().subscribeToTopic("news").addOnCompleteListener(task1 -> {});
                         }
                     }
