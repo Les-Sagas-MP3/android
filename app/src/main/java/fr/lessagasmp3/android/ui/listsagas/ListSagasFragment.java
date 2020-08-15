@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.futuremind.recyclerviewfastscroll.FastScroller;
-
 import fr.lessagasmp3.android.R;
 import fr.lessagasmp3.android.task.GetSagasTask;
 
@@ -30,12 +28,10 @@ public class ListSagasFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         SwipeRefreshLayout mSwipeRefreshLayout = root.findViewById(R.id.swipeToRefresh);
-        FastScroller fastScroller = root.findViewById(R.id.fastscroll);
 
         final ListSagasAdapter adapter = new ListSagasAdapter(this.getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
-        fastScroller.setRecyclerView(recyclerView);
 
         mSagaViewModel = new ViewModelProvider(this).get(ListSagasViewModel.class);
         mSagaViewModel.getAllSagas().observe(getViewLifecycleOwner(), adapter::setSagas);

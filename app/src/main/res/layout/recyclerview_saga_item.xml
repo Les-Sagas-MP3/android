@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=
+    "http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="243dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/title"
+        tools:text="title" />
+
+    <Button
+        android:id="@+id/website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Website" />
+
+    <Button
+        android:id="@+id/wiki"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toEndOf="@id/website"
+        android:text="Wiki" />
+
+    <ProgressBar
+        android:id="@+id/top_level_art"
+        style="@style/Widget.ProgressBar.LevelArt.Top"
+        android:layout_width="10dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintBottom_toTopOf="@id/divider_level_art"
+        app:layout_constraintEnd_toEndOf="@id/divider_level_art" />
+
+    <View
+        android:id="@+id/divider_level_art"
+        android:layout_width="16dp"
+        android:layout_height="1dp"
+        android:background="#ccc"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@id/divider_level_tech"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/bottom_level_art"
+        style="@style/Widget.ProgressBar.LevelArt.Bottom"
+        android:layout_width="10dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintEnd_toEndOf="@id/divider_level_art"
+        app:layout_constraintTop_toBottomOf="@id/divider_level_art" />
+
+    <TextView
+        android:id="@+id/label_level_art"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:text="Art"
+        android:textSize="7sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/bottom_level_art"
+        app:layout_constraintEnd_toStartOf="@id/divider_level_tech"/>
+
+    <ProgressBar
+        android:id="@+id/top_level_tech"
+        style="@style/Widget.ProgressBar.LevelTech.Top"
+        android:layout_width="10dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintBottom_toTopOf="@id/divider_level_tech"
+        app:layout_constraintEnd_toEndOf="@id/divider_level_tech"/>
+
+    <View
+        android:id="@+id/divider_level_tech"
+        android:layout_width="16dp"
+        android:layout_height="1dp"
+        android:background="#ccc"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@id/bravos"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/bottom_level_tech"
+        style="@style/Widget.ProgressBar.LevelTech.Bottom"
+        android:layout_width="10dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        app:layout_constraintEnd_toEndOf="@id/divider_level_tech"
+        app:layout_constraintTop_toBottomOf="@+id/divider_level_tech" />
+
+    <TextView
+        android:id="@+id/label_level_tech"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="Tech"
+        android:textSize="7sp"
+        app:layout_constraintEnd_toStartOf="@id/bravos"
+        app:layout_constraintTop_toBottomOf="@id/bottom_level_tech" />
+
+    <TextView
+        android:id="@+id/bravos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/circular_textview"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ccc"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/website"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,15 +18,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            tools:listitem="@layout/recyclerview_item" />
-
-        <com.futuremind.recyclerviewfastscroll.FastScroller
-            android:id="@+id/fastscroll"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:orientation="vertical" />
+            tools:listitem="@layout/recyclerview_saga_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
