@@ -1,9 +1,8 @@
 package fr.lessagasmp3.android;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,27 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent(this, PingService.class);
-        i.putExtra("core_url", getString(R.string.core_url));
-        startService(i);
         mAuth = FirebaseAuth.getInstance();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            String channelId  = getString(R.string.new_notification_channel_id);
-            String channelName = getString(R.string.new_notification_channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));
-        }
-
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                Log.d(TAG, "Key: " + key + " Value: " + value);
-            }
-        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -83,15 +62,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(!isServiceRunning(PingService.class)) {
+            Intent i = new Intent(this, PingService.class);
+            i.putExtra("core_url", getString(R.string.core_url));
+            startService(i);
+        }
+
         mAuth.signInAnonymously()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
-                            FirebaseMessaging.getInstance().subscribeToTopic("news").addOnCompleteListener(task1 -> {});
+                            FirebaseMessaging.getInstance().subscribeToTopic("news").addOnCompleteListener(task1 -> Log.i(TAG, "Subscribed to news FCM"));
                         }
                     }
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error while logging anonymously"));
     }
+
+    private boolean isServiceRunning(Class className) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (className.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

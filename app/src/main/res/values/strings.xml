@@ -8,5 +8,6 @@
     <string name="new_notification_channel_id" translatable="false">news</string>
     <string name="new_notification_channel_name" translatable="true">News</string>
     <string name="news_notification_title" translatable="true">Les Sagas MP3 - new content</string>
+    <string name="news_notification_body" translatable="true">Tap to open the app</string>
     <string name="no_sagas">Currently there is no Saga</string>
 </resources>
