@@ -1,0 +1,7 @@
+{
+  "name": "les-sagas-mp3",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
