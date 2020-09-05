@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Actualités</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>{{ item.title }}</ion-card-title>
+            <ion-card-subtitle>Par {{ item.author }} le {{ item.pubdate | date:'short' }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+            <div [innerHtml]="item.description"></div>
+            <ion-button href="{{ item.link }}" slot="end">Lire sur Netophonix</ion-button>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

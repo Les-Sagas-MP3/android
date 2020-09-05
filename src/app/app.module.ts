@@ -9,8 +9,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { SagaService } from './services/sagas/saga.service';
 import { CategoryService } from './services/categories/category.service';
+import { RssMessageService } from './services/rss.message/rss.message.service';
+import { SagaService } from './services/sagas/saga.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { CategoryService } from './services/categories/category.service';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CategoryService,
+    RssMessageService,
     SagaService
   ],
   bootstrap: [AppComponent]

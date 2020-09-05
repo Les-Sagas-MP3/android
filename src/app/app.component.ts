@@ -13,6 +13,11 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
+      title: 'Actualités',
+      url: '/news',
+      icon: 'newspaper'
+    },
+    {
       title: 'Liste des Sagas',
       url: '/sagas',
       icon: 'list'
